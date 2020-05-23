@@ -8,3 +8,37 @@ before_install:
 
 script:
     - docker run -e CI=true soumya9v/docker-react npm run test -- --coverage
+
+deploy:
+    provider: elasticbeanstalk
+    # DockerReact-env.eba-b2zmw4mg.us-east-2.elasticbeanstalk.com here you can find region
+    region: "us-east-2"
+    # Application name: docker-react
+    app: "docker-react"
+    # Environments name : DockerReact-env
+    env : "DockerReact-env"
+    # AWS ---> Services --> search for S3 --> list of buckets. copy the bucket name based on your project
+    bucket_name: "elasticbeanstalk-us-east-2-961749170280"
+    # for the first time use bucket_path === app
+    bucket_path: "docker-react"
+    # any time branch master changes only then deploy
+    on:
+        branch: master
+    # AWS --> services --> search for IAM --> add new user (use by travis CL)
+    # select attach existing policies directly --> select AWSElasticBeanstalkFullAccess in the below list
+    # cofigure the user key in the travis-ci.org
+
+    #travis-ci.org --> project --> settings --> Environment Variables
+    # enter --> name: AWS_ACCESS_KEY and VALUE : paste access key from AWS and add
+    # enter --> name : AWS_SECRET_KEY and VALUE : paste secret key from AWS and add
+
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+
+
+
+
+
+
+
+
